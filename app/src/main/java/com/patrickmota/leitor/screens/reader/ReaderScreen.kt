@@ -32,7 +32,7 @@ fun ReaderScreen(navController: NavController, url: String) {
     val isLoading = remember {
         mutableStateOf(true)
     }
-    Content(url = url, isLoading = {isLoading.value = !isLoading.value})
+    Content(url = url, isLoading = {isLoading.value = false})
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
