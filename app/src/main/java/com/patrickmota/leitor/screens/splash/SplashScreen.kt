@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.patrickmota.leitor.R
 import com.patrickmota.leitor.navigation.LeitorScreens
+import com.patrickmota.leitor.ui.theme.Purple500
 import com.patrickmota.leitor.utils.NavigationBarColor
 import com.patrickmota.leitor.utils.StatusBarColor
 
@@ -22,7 +23,7 @@ fun SplashScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Leitor", fontSize = 48.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Leitor", fontSize = 48.sp, fontWeight = FontWeight.Bold, color = Purple500)
     }
 
     navController.navigate(LeitorScreens.HomeScreen.name)

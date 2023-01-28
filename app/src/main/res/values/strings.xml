@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">leitor</string>
+    <string name="app_name">Leitor</string>
+    <string name="title">Leia artigos,\njornais &amp;\nmaterias online</string>
+    <string name="read_content">Ler conteúdo</string>
+    <string name="url">URL</string>
+    <string name="url_example">https://www.exemplo.com</string>
 </resources>

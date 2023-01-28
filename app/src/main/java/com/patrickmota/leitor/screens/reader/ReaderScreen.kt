@@ -26,20 +26,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import com.patrickmota.leitor.ui.theme.Purple500
 
 @Composable
 fun ReaderScreen(navController: NavController, url: String) {
     val isLoading = remember {
         mutableStateOf(true)
     }
-    Content(url = url, isLoading = {isLoading.value = false})
+    Content(url = url, isLoading = { isLoading.value = false })
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        if (isLoading.value){
-            Text(text = "Carregando...", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        if (isLoading.value) {
+            Text(
+                text = "Carregando...",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = Purple500
+            )
         }
     }
     IconButton(onClick = { navController.popBackStack() }) {
@@ -49,7 +55,7 @@ fun ReaderScreen(navController: NavController, url: String) {
             tint = Color.White,
             modifier = Modifier
                 .background(
-                    color = Color.Black,
+                    color = Purple500,
                     shape = RoundedCornerShape(30.dp)
                 )
                 .padding(7.dp)
