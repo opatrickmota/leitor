@@ -49,4 +49,4 @@ jobs:
           serviceAccountJson: service_account.json
           packageName: com.patrickmota.leitor
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: beta
+          track: internal
