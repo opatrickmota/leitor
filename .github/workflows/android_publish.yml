@@ -21,22 +21,22 @@ jobs:
         run: chmod +x build.gradle
 
       - name: Build with Gradle
-          id: build
-          run: ./gradlew build
+        id: build
+        run: ./gradlew build
 
       - name: Sign AAB
-          id: sign
-          uses: r0adkll/sign-android-release@v1
-          with:
-            releaseDirectory: app/build/outputs/bundle/release
-            signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-            alias: ${{ secrets.ALIAS }}
-            keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-            keyPassword: ${{ secrets.KEY_PASSWORD }}
+        id: sign
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
 
       - name: Create service_account.json
-          id: createServiceAccount
-          run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+        id: createServiceAccount
+        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
 
             - name: Deploy to Play Store (BETA)
               id: deploy
