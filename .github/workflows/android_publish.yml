@@ -50,4 +50,4 @@ jobs:
           packageName: com.patrickmota
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: beta
-          whatsNewDirectory: leitor/whatsnew
+          whatsNewDirectory: leitor
