@@ -92,6 +92,7 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = getV
             colors = TextFieldDefaults.textFieldColors(
                 textColor = if (error) Color.Red else Color.Blue,
                 focusedIndicatorColor = if (error) Color.Red else Color.Blue,
+                unfocusedIndicatorColor = if (error) Color.Red else Color.Blue,
                 backgroundColor = LightGray,
             )
         )
