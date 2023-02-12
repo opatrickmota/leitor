@@ -4,10 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.webkit.URLUtil.isValidUrl
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,10 +27,10 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,10 +45,13 @@ import com.patrickmota.leitor.R
 import com.patrickmota.leitor.model.Leitor
 import com.patrickmota.leitor.navigation.LeitorScreens
 import com.patrickmota.leitor.ui.theme.LightGray
+import com.patrickmota.leitor.ui.theme.Purple200
 import com.patrickmota.leitor.ui.theme.Purple500
+import com.patrickmota.leitor.ui.theme.Red
 import com.patrickmota.leitor.utils.RippleCustomTheme
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -56,7 +62,15 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = getV
         mutableStateOf(false)
     }
     val urls = remember {
-        mutableStateOf(homeViewModel.leitor)
+        mutableStateOf<List<Leitor>>(emptyList())
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    coroutineScope.launch {
+        homeViewModel.getUrls().collect {
+            urls.value = it
+        }
     }
 
     Column(
@@ -110,7 +124,7 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = getV
             Text(text = context.resources.getString(R.string.read_content))
         }
 
-        ListAccessedUrl(homeViewModel = homeViewModel, navController = navController, urls)
+        ListAccessedUrl(homeViewModel = homeViewModel, navController = navController, urls.value)
     }
 
     FinishApplication(context = context)
@@ -121,44 +135,50 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = getV
 fun ListAccessedUrl(
     homeViewModel: HomeViewModel,
     navController: NavController,
-    urls: MutableState<List<Leitor>>
+    urls: List<Leitor>
 ) {
 
     LazyColumn {
-        items(items = urls.value) { item ->
+        items(items = urls) { item ->
+
+            val interactionSource = remember { MutableInteractionSource() }
+            val isPressed by interactionSource.collectIsPressedAsState()
+
             Row(
-                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TextButton(
                     onClick = {
+                        homeViewModel.deleteUrl(item)
+
                         navigateToContent(
                             homeViewModel = homeViewModel,
                             url = item.url,
-                            navController = navController,
-                            addUrl = false
+                            navController = navController
                         )
                     },
-                    modifier = Modifier.weight(0.7f)
+                    modifier = Modifier.weight(0.8f)
                 ) {
                     Text(
                         text = item.url,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
                 CompositionLocalProvider(LocalRippleTheme provides RippleCustomTheme) {
                     IconButton(
                         onClick = {
                             homeViewModel.deleteUrl(item)
-                            urls.value = homeViewModel.getUrls()
                         },
+                        interactionSource = interactionSource,
                         modifier = Modifier
-                            .weight(0.3f)
+                            .weight(0.2f)
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Delete,
-                            contentDescription = "Delete url"
+                            contentDescription = "Delete url",
+                            tint = if (isPressed) Red else Purple200
                         )
                     }
                 }
