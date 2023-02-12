@@ -27,6 +27,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,9 +68,11 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = getV
 
     val coroutineScope = rememberCoroutineScope()
 
-    coroutineScope.launch {
-        homeViewModel.getUrls().collect {
-            urls.value = it
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch {
+            homeViewModel.getUrls().collect {
+                urls.value = it
+            }
         }
     }
 
